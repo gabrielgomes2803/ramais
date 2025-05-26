@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Ramais - Geoenergy</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin: 20px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .card h2 {
+      margin-top: 0;
+      color: #0066cc;
+    }
+    .card p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Lista de Ramais - Geoenergy</h1>
+  <input type="text" id="search" placeholder="Pesquisar por nome, sigla, ramal ou área...">
+  <div class="container" id="list"></div>
+
+  <script>
+    const data = [
+      { numero: 1, ramal: '2221', sigla: 'ADL', nome: 'ADRIANO DOMINGUES LIVRAMENTO', email: 'adriano.livramento@geoenergy.com.br', area: 'Estruturas' },
+      { numero: 2, ramal: '2222', sigla: 'AS', nome: 'ANA CAROLINA SILVA', email: 'ana.silva@geoenergy.com.br', area: 'Geologia/Geotecnia' },
+      { numero: 3, ramal: '2168', sigla: 'AZ', nome: 'ALAN JOSÉ ZARAMELLA', email: 'alan.zaramella@geoenergy.com.br', area: 'Coordenador de Projetos' },
+      { numero: 4, ramal: '2220', sigla: 'ACO', nome: 'ANDERSON CANDEMIL DE OLIVEIRA', email: 'anderson.candemil@geoenergy.com.br', area: 'Diretor Planejamento Obras' },
+      { numero: 5, ramal: '2211', sigla: 'BSS', nome: 'BERNARDO SARDÁ', email: 'bernardo.sarda@geoenergy.com.br', area: 'Estruturas' },
+      { numero: 6, ramal: '2206', sigla: 'BAG', nome: 'BENHUR AUGUSTO GHELLER', email: 'benhur.gheller@geoenergy.com.br', area: 'Diretor Layout Formas' },
+      { numero: 7, ramal: '2150', sigla: 'CCM', nome: 'CAMILA CRISTINE ARAUJO MENDES', email: 'camila.mendes@geoenergy.com.be', area: 'RH e secretariado' },
+      { numero: 8, ramal: '2215', sigla: 'CCR', nome: 'CARLA RIBEIRO', email: 'carla.ribeiro@geoenergy.com.br', area: 'Layout/Formas' },
+      { numero: 9, ramal: '2211', sigla: 'CRB', nome: 'CAIO ROGÉRIO ENDLER BRITO', email: 'caio.brito@geoenergy.com.br', area: 'Estruturas' },
+      { numero: 10, ramal: '2231', sigla: 'CPL', nome: 'CAROLINA PAULA LEMOS', email: 'carolina.lemos@geoenergy.com.br', area: 'Hidrologia/Hidráulica' },
+      { numero: 11, ramal: '2212', sigla: 'DC', nome: 'DANIELA DA COSTA', email: 'daniela.costa@geoenergy.com.br', area: 'Layout/Formas' },
+      { numero: 12, ramal: '2218', sigla: 'EOK', nome: 'ELVES KUNTZE', email: 'elves.kuntze@geoenergy.com.br', area: 'Estruturas' },
+      { numero: 13, ramal: '2207', sigla: 'FM', nome: 'FABRICIO MARTINS', email: 'fabricio.martins@geoenergy.com.br', area: 'Layout/Formas' },
+      { numero: 14, ramal: '2224', sigla: 'FGL', nome: 'FERNANDO GABRIEL LUDKE', email: 'fernando.ludke@geoenergy.com.br', area: 'Geologia/Geotecnia' },
+      { numero: 15, ramal: '2189', sigla: 'GGP', nome: 'GABRIEL GOMES PALHANO', email: 'gabriel.gomes@geoenergy.com.br', area: 'TI' },
+      { numero: 16, ramal: '2226', sigla: 'GM', nome: 'GILBERTO MORATELLI', email: 'gilberto.moratelli@geoenergy.com.br', area: 'Geologia/Geotecnia' },
+      { numero: 17, ramal: '2236', sigla: 'GB', nome: 'GUILHERME BRANDÃO', email: 'guilherme.brandao@geoenergy.com.br', area: 'Hidrologia/Hidráulica' },
+      { numero: 18, ramal: '2217', sigla: 'JBS', nome: 'JOÃO VITOR DE BEM SILVA', email: 'joao.silva@geoenergy.com.br', area: 'Estruturas' },
+      { numero: 19, ramal: '2228', sigla: 'JEC', nome: 'JOSE EDUARDO C. CAMOZI', email: 'jose.camozi@geoenergy.com.br', area: 'Geologia/Geotecnia' },
+      { numero: 20, ramal: '2219', sigla: 'JJL', nome: 'JULIANO LIZ', email: 'juliano.liz@geoenergy.com.br', area: 'Estruturas' },
+      { numero: 21, ramal: '2196', sigla: 'LM', nome: 'LISIANE MUTTI', email: 'lisiane.mutti@geoenergy.com.br', area: 'Financeiro' },
+      { numero: 22, ramal: '2225', sigla: 'LMC', nome: 'LIWIA MONTEIRO CONDE', email: 'liwia.conde@geoenergy.com.br', area: 'Geologia/Geotecnia' },
+      { numero: 23, ramal: '2190', sigla: 'LSS', nome: 'LARA DOS SANTOS SARAIVA', email: 'lara.saraiva@geoenergy.com.br', area: 'Coordenção de Projetos' },
+      { numero: 24, ramal: '2205', sigla: 'LBN', nome: 'LUCIANO BARBOSA NASCIMENTO', email: 'luciano.nascimento@geoenergy.com.br', area: 'Mecânica' },
+      { numero: 25, ramal: '2185', sigla: 'MAG', nome: 'MARCELO GASPARETTO', email: 'marcelo.gasparetto@geoenergy.com.br', area: 'Diretor Contratos e ADM/FIN' },
+      { numero: 26, ramal: '2223', sigla: 'MMF', nome: 'MARCELO MANOEL FERNANDES', email: 'marcelo.fernandes@geoenergy.com.br', area: 'Diretor Geologia/Geotecnia' },
+      { numero: 27, ramal: '2192', sigla: 'NP', nome: 'NATHÁLIA PIRES', email: 'nathalia.pires@geoenergy.com.br', area: 'Hidrologia/Hidráulica' },
+      { numero: 28, ramal: '2184', sigla: 'OD', nome: 'ODINEI DUTRA', email: 'odnei.dutra@geoenergy.com.br', area: 'Elétrica' },
+      { numero: 29, ramal: '2167', sigla: 'RFP', nome: 'RAFAEL FERNANDES PEREIRA', email: 'rafael.fernandes@geoenergy.com.br', area: 'Diretor de Novos Contratos' },
+      { numero: 30, ramal: '2209', sigla: 'RPS', nome: 'ROGÉRIO PEREIRA DE SOUZA', email: 'rogerio.pereira@geoenergy.com.br', area: 'Layout/Formas' },
+      { numero: 31, ramal: '2229', sigla: 'SV', nome: 'SARA VEECK', email: 'sara.veeck@atiaiarenovaveis.com.br', area: 'Projetos' },
+      { numero: 32, ramal: '2216', sigla: 'TT', nome: 'TSUNA TAIJI', email: 'tsuna.taiji@geoenergy.com.br', area: 'Estruturas' },
+      { numero: 33, ramal: '2203', sigla: 'VLD', nome: 'VÍTHOR LUIZ FRANCISCO DUARTE', email: 'vithor.duarte@geoenergy.com.br', area: 'Geologia/Geotecnia' },
+      { numero: 34, ramal: '2214', sigla: 'WSS', nome: 'WANESSA SALES DOS SANTOS', email: 'wanessa.sales@geoenergy.com.br', area: 'Layout/Formas' },
+      { numero: 35, ramal: '', sigla: 'COPA', nome: 'NICE', email: '', area: 'Copa' },
+      { numero: 36, ramal: '2193', sigla: '-', nome: 'SALA DE REUNIÃO 01', email: '', area: '' },
+      { numero: 37, ramal: '2195', sigla: '-', nome: 'SALA DE REUNIÃO 02', email: '', area: '' }
+    ];
+
+    const list = document.getElementById('list');
+    const search = document.getElementById('search');
+
+    function renderList(filtered = data) {
+      list.innerHTML = '';
+      filtered.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `<h2>${p.nome}</h2>
+                         <p><strong>Ramal:</strong> ${p.ramal}</p>
+                         <p><strong>Sigla:</strong> ${p.sigla}</p>
+                         <p><strong>Email:</strong> ${p.email}</p>
+                         <p><strong>Área:</strong> ${p.area}</p>`;
+        list.appendChild(div);
+      });
+    }
+
+    search.addEventListener('input', () => {
+      const term = search.value.toLowerCase();
+      const filtered = data.filter(p =>
+        p.nome.toLowerCase().includes(term) ||
+        p.sigla.toLowerCase().includes(term) ||
+        p.ramal.toLowerCase().includes(term) ||
+        p.area.toLowerCase().includes(term)
+      );
+      renderList(filtered);
+    });
+
+    renderList();
+  </script>
+</body>
+</html>
